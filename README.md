@@ -3,7 +3,9 @@
 Este proyecto es un entregable de un ejercicio Práctico java
 
 El proyecto incluye un archivo **_import.sql_** para llenar con data inicial, el cual consta de un registro de usuario, para el login el cual es:   admin@eval.cl / admin.
+
 El proyecto utiliza una BD H2 e inicia en el puerto por defecto 8080.
+
 Contiene un archivo  **_Eval-Java -DDQS.postman_collection.json**_ el cual es una colección de Postman con las apis a consumir segun indcaciones de la prueba.
 
 ## Servicio 1: Crear Usuario
