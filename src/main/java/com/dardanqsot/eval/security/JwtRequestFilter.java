@@ -29,8 +29,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String username = null;
         String jwtToken = null;
 
-        if(header != null){
-            if(header.startsWith("Bearer ") || header.startsWith("bearer ")){
+        if (header != null) {
+            if (header.startsWith("Bearer ") || header.startsWith("bearer ")) {
                 jwtToken = header.substring(7);
 
                 try {
@@ -43,14 +43,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         if (username != null) {
             try {
-            UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
-
-            if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
-                UsernamePasswordAuthenticationToken userPassAuthToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                userPassAuthToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(userPassAuthToken);
-            }
+                UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
+                if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
+                    UsernamePasswordAuthenticationToken userPassAuthToken = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    userPassAuthToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(userPassAuthToken);
+                }
             } catch (UsernameNotFoundException e) {
                 request.setAttribute("exception", "Usuario no encontrado");
             } catch (Exception e) {

@@ -6,3 +6,8 @@ application:
 jwt:
   secret: 6f98d50007d77ce60c745b87e0b0ac3184cbcb71bcb21b32473c20cf8baddc502926d95e6934a77e4ba43110dc638e6a7f155bd22f652b46dcacd0db24f5e083
 
+password:
+  format: ^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$
+  message: "El password no cumple con el formato establecido"
+
+

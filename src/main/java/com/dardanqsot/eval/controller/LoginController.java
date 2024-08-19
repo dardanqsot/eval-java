@@ -27,14 +27,14 @@ public class LoginController {
     private final JwtUserDetailsService userDetailsService;
 
     @PostMapping("/login")
-    public ResponseEntity<ResponseDto<JwtResponse>> login(@RequestBody JwtRequest req) throws Exception{
+    public ResponseEntity<ResponseDto<JwtResponse>> login(@RequestBody JwtRequest req) {
         authenticate(req.getEmail(), req.getPassword());
         final UserDetails userDetails = userDetailsService.loadUserByUsername(req.getEmail());
         final String token = jwtTokenUtil.generateToken(userDetails);
         return new ResponseEntity<>(ResponseDto.successResponse(new JwtResponse(token)), HttpStatus.OK);
     }
 
-    private void authenticate(String email, String password) throws Exception{
+    private void authenticate(String email, String password) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         } catch (BadCredentialsException e) {

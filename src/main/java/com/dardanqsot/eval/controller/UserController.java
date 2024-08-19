@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/v1/user")
@@ -28,33 +29,31 @@ public class UserController {
         return new ResponseEntity<>(ResponseDto.successResponse(lst), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ResponseDto<UserRequestDto>> findById(@PathVariable("id") Integer id){
-        User obj = service.findById(id);
+    @GetMapping("/{uuid}")
+    public ResponseEntity<ResponseDto<UserRequestDto>> findById(@PathVariable("uuid") UUID uuid){
+        User obj = service.findByUuid(uuid);
         return new ResponseEntity<>(ResponseDto.successResponse(convertToDto(obj)), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<ResponseDto<UserResponseDto>> save(@Valid @RequestBody UserRequestDto dto){
-        return new ResponseEntity<>(ResponseDto.successResponse(service.createUser(dto)), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseDto.successResponse(service.createUser(dto)), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UserRequestDto> update(@Valid @PathVariable("id") Integer id, @RequestBody UserRequestDto dto) throws Exception {
-        User obj = service.update(convertToEntity(dto), id);
-        return new ResponseEntity<>(convertToDto(obj), HttpStatus.OK);
+    @PutMapping("/{uuid}")
+    public ResponseEntity<ResponseDto<UserRequestDto>> update(@Valid @PathVariable("uuid") UUID uuid, @RequestBody UserRequestDto dto) throws Exception {
+        User obj = service.updateUser(dto, uuid);
+        return new ResponseEntity<>(ResponseDto.successResponse(convertToDto(obj)), HttpStatus.OK);
+
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") Integer id){
-        service.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @DeleteMapping("/{uuid}")
+    public ResponseEntity<ResponseDto<Void>> delete(@PathVariable("uuid") UUID uuid){
+        service.deleteUser(uuid);
+        return new ResponseEntity<>(ResponseDto.successResponse(null), HttpStatus.NO_CONTENT);
     }
     private UserRequestDto convertToDto(User obj){
         return mapper.map(obj, UserRequestDto.class);
     }
 
-    private User convertToEntity(UserRequestDto dto){
-        return mapper.map(dto, User.class);
-    }
 }

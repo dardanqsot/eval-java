@@ -1,6 +1,10 @@
 package com.dardanqsot.eval.dto;
 
+import com.dardanqsot.eval.constraint.PasswordConstraint;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,13 +21,16 @@ public class UserRequestDto {
 
     private UUID idUser;
 
-    @NotNull
+    @NotBlank
     private String name;
 
-    @NotNull
+    @NotBlank
+    @Email
+    @Pattern(regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.cl$", message = "El correo debe tener el formato aaaaaaa@dominio.cl")
     private String email;
 
-    @NotNull
+    @NotBlank
+    @PasswordConstraint
     private String password;
 
     @NotNull
