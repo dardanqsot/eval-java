@@ -1,7 +1,9 @@
 package com.dardanqsot.eval.service.Impl;
 
+import com.dardanqsot.eval.dto.UserDto;
 import com.dardanqsot.eval.dto.UserRequestDto;
-import com.dardanqsot.eval.dto.UserResponseDto;
+import com.dardanqsot.eval.dto.UserSaveResponseDto;
+import com.dardanqsot.eval.exception.NotFoundApiException;
 import com.dardanqsot.eval.model.Phone;
 import com.dardanqsot.eval.model.User;
 import com.dardanqsot.eval.repository.GenericRepo;
@@ -19,7 +21,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -39,16 +42,16 @@ public class UserServiceImpl extends CRUDImpl<User, Integer> implements UserServ
 
     @Override
     @Transactional
-    public UserResponseDto createUser(UserRequestDto userRequestDto) {
+    public UserSaveResponseDto createUser(UserRequestDto userRequestDto) {
         try {
             User user = User.builder()
                     .name(userRequestDto.getName())
                     .email(userRequestDto.getEmail())
                     .password(passwordEncoder.encode(userRequestDto.getPassword()))
-                    .created(LocalDate.now())
+                    .created(LocalDateTime.now())
                     .isActive(Constants.IS_ACTIVE)
-                    .modified(LocalDate.now())
-                    .lastLogin(LocalDate.now())
+                    .modified(LocalDateTime.now())
+                    .lastLogin(LocalDateTime.now())
                     .build();
             repo.save(user);
             userRequestDto.getPhones().forEach(p -> {
@@ -64,7 +67,7 @@ public class UserServiceImpl extends CRUDImpl<User, Integer> implements UserServ
             final String token = jwtTokenUtil.generateToken(userDetails);
             user.setToken(token);
             repo.save(user);
-            return modelMapper.map(user, UserResponseDto.class);
+            return modelMapper.map(user, UserSaveResponseDto.class);
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException(Constants.CORREO_EXISTE);
         }
@@ -76,18 +79,26 @@ public class UserServiceImpl extends CRUDImpl<User, Integer> implements UserServ
     }
 
     @Override
-    public User updateUser(UserRequestDto userRequestDto, UUID uuid) {
+    @Transactional
+    public UserSaveResponseDto updateUser(UserDto userDto, UUID uuid) {
         try {
             User user = repo.findByIdUser(uuid);
-            user.setName(userRequestDto.getName());
-            user.setEmail(userRequestDto.getEmail());
-            user.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
-            user.setModified(LocalDate.now());
+
+            if(!Objects.isNull(userDto.getName()))
+                user.setName(userDto.getName());
+            if(!Objects.isNull(userDto.getEmail()))
+                user.setEmail(userDto.getEmail());
+            if(!Objects.isNull(userDto.getPassword()))
+                user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+            if(!Objects.isNull(userDto.getIsActive()))
+                user.setActive(userDto.getIsActive());
+
+            user.setModified(LocalDateTime.now());
             final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
             final String token = jwtTokenUtil.generateToken(userDetails);
             user.setToken(token);
             repo.save(user);
-            return user;
+            return modelMapper.map(user, UserSaveResponseDto.class);
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException(Constants.CORREO_EXISTE);
         }
@@ -95,7 +106,10 @@ public class UserServiceImpl extends CRUDImpl<User, Integer> implements UserServ
 
     @Override
     public void deleteUser(UUID uuid) {
-        User user = repo.findByIdUser(uuid);
-        repo.delete(user);
+        User user = repo.findByIdUserAndIsActive(uuid, Constants.IS_ACTIVE)
+                .orElseThrow(NotFoundApiException.supplier(Constants.NO_FOUND));
+        user.setActive(Constants.NO_ACTIVE);
+        user.setModified(LocalDateTime.now());
+        repo.save(user);
     }
 }

@@ -30,6 +30,7 @@ public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ModelNotFoundException.class)
     public ResponseEntity<ResponseDto> handleModelNotFoundException(ModelNotFoundException ex, WebRequest request){
+        System.out.println("error aca");
         ResponseDto err = new ResponseDto(ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(err, HttpStatus.NOT_FOUND);
     }
@@ -40,7 +41,7 @@ public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
      }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ResponseDto> handleModelNotFoundException(DataIntegrityViolationException ex, WebRequest request){
+    public ResponseEntity<ResponseDto> handleDataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request){
         ResponseDto err = new ResponseDto(ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(err, HttpStatus.BAD_REQUEST);
     }
@@ -62,6 +63,11 @@ public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
                 "El valor '" + ex.getValue() + "' no se puede convertir al tipo requerido: " + ex.getRequiredType().getSimpleName(),
                 request.getDescription(false)
         );
+        return new ResponseEntity<>(err, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(NotFoundApiException.class)
+    public ResponseEntity<ResponseDto> handleNotFoundApiException(NotFoundApiException ex, WebRequest request){
+        ResponseDto err = new ResponseDto(ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(err, HttpStatus.BAD_REQUEST);
     }
 }

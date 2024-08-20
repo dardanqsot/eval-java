@@ -10,4 +10,10 @@ password:
   format: ^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$
   message: "El password no cumple con el formato establecido"
 
-
+springdoc:
+  api-docs:
+    path: /api-docs
+    enabled: true
+  swagger-ui:
+    path: swagger-ui.html
+    enabled: true

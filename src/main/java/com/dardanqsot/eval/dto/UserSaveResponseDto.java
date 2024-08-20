@@ -6,20 +6,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.UUID;
+
 
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserResponseDto {
+public class UserSaveResponseDto {
 
     private UUID idUser;
-
-    private String name;
-
-    private String email;
 
     private LocalDate created;
 
@@ -30,6 +26,4 @@ public class UserResponseDto {
     private String token;
 
     private boolean isActive;
-
-    private List<PhoneResponseDto> phones;
 }

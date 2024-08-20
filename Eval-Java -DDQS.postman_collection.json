@@ -12,17 +12,11 @@
 				{
 					"name": "User - create",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBldmFsLmNsIiwiaWF0IjoxNzI0MTAwMjIzLCJleHAiOjE3MjQxMTgyMjN9.ERTv41ozyjPeqF9P2F_Xp0pYAgMEoWcpizxUQ2NfUo50ZqZuoaZ1EkQd4mmLXU8yXxhZ75Z-1iya1eaAr_Tq2A"
-							}
-						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "\r\n{\r\n    \"name\": \"Juan Rodriguez\",\r\n    \"email\": \"juan@rodriguez2.cl\",\r\n    \"password\": \"Hhunter2\",\r\n    \"phones\": [\r\n        {\r\n            \"number\": \"1234567\",\r\n            \"cityCode\": \"1\",\r\n            \"countryCode\": \"57\"\r\n        }\r\n    ]\r\n}",
+							"raw": "\r\n{\r\n    \"name\": \"Juan Rodriguez\",\r\n    \"email\": \"juan@rodriguez3.cl\",\r\n    \"password\": \"Hhunter2\",\r\n    \"phones\": [\r\n        {\r\n            \"number\": \"1234567\",\r\n            \"cityCode\": \"1\",\r\n            \"countryCode\": \"57\"\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -38,57 +32,82 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "localhost:8080/v1/user/5cf59dca-455c-4ccc-8dd2-a8c390868e96"
+						"url": "localhost:8080/v1/user"
 					},
 					"response": []
 				},
 				{
 					"name": "User -ById",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcyNDA0NTg1MCwiZXhwIjoxNzI0MDYzODUwfQ.Gt_SqaiF40F5YwvrcYlOzHdJu-BsGDoCw0rzTkYGMLTo_K-S-uRvyzdoDmYrARoXRHlyBQnZi2nulML_mp_z-Q"
-							}
-						},
 						"method": "GET",
 						"header": [],
-						"url": "localhost:8080/v1/user/5"
+						"url": "localhost:8080/v1/user/49f81ff0-f5a4-4388-863c-b94f6add5437"
 					},
 					"response": []
 				},
 				{
 					"name": "User - update",
 					"request": {
-						"method": "PUT",
+						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "\r\n{\r\n    \"name\": \"Juan Rodriguez\",\r\n    \"email\": \"juan@rodriguez2.cl\",\r\n    \"password\": \"Hhunter2\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Juan Rodriguez change\",\r\n    \"email\": \"juan@rodriguez3.cl\",\r\n    \"active\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "localhost:8080/v1/user/5cf59dca-455c-4ccc-8dd2-a8c390868e96"
+						"url": "localhost:8080/v1/user/49f81ff0-f5a4-4388-863c-b94f6add5437"
 					},
 					"response": []
 				},
 				{
-					"name": "User - update Copy",
+					"name": "User - Delete",
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": "localhost:8080/v1/user/5cf59dca-455c-4ccc-8dd2-a8c390868e96"
+						"url": "localhost:8080/v1/user/49f81ff0-f5a4-4388-863c-b94f6add5437"
 					},
 					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": {
+					"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBldmFsLmNsIiwiaWF0IjoxNzI0MTI5MDQ1LCJleHAiOjE3MjQxNDcwNDV9.Qx7gm8wmiL2vZLxRxjkXdOyQzZtdx01Krmubji_DxqTshXmaiQ1jy5ePgFuHWnfXghpdRbOCEvcFnt-5lXaDOQ"
+				}
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
 		{
 			"name": "login",
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -103,6 +122,28 @@
 				"url": "localhost:8080/login"
 			},
 			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }

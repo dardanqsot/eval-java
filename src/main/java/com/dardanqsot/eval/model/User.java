@@ -3,7 +3,7 @@ package com.dardanqsot.eval.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,11 +30,11 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    private LocalDate created;
+    private LocalDateTime created;
 
-    private LocalDate modified;
+    private LocalDateTime modified;
 
-    private LocalDate lastLogin;
+    private LocalDateTime lastLogin;
 
     private String token;
 

@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,8 @@ public class JwtUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException(String.format("El usuario no existe", email));
         }
 
+        user.setLastLogin(LocalDateTime.now());
+        repo.save(user);
         List<GrantedAuthority> permissions = new ArrayList<>();
         UserDetails ud = new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), permissions);
         return ud;
