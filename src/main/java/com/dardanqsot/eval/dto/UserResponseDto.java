@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,11 +22,11 @@ public class UserResponseDto {
 
     private String email;
 
-    private LocalDate created;
+    private LocalDateTime created;
 
-    private LocalDate modified;
+    private LocalDateTime modified;
 
-    private LocalDate lastLogin;
+    private LocalDateTime lastLogin;
 
     private String token;
 
